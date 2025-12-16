@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookSaathi - Green Edition</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-green: #63B311;
+            --primary-hover: #52960e;
+            --bg-dark: #050505;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        nav,
+        button,
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* === SMOOTH WAVE CANVAS === */
+        #waveCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* === GLASSMORPHISM === */
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            border-color: var(--primary-green);
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(99, 179, 17, 0.2);
+        }
+
+        /* === BUTTONS === */
+        .btn-primary {
+            background: linear-gradient(135deg, #63B311 0%, #4a8a0c 100%);
+            color: #fff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(99, 179, 17, 0.4);
+        }
+
+        /* === TOGGLES === */
+        .toggle-switch {
+            appearance: none;
+            width: 44px;
+            height: 24px;
+            background-color: #333;
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .toggle-switch:checked {
+            background-color: var(--primary-green);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            background: white;
+            transition: 0.3s;
+        }
+
+        .toggle-switch:checked::before {
+            transform: translateX(20px);
+        }
+
+        /* === CHATBOT STATES === */
+        .chef-btn {
+            transition: all 0.4s ease;
+        }
+
+        /* IDLE: Dark Grey */
+        .chef-idle {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            color: #666;
+        }
+
+        /* LISTENING: Red Pulse */
+        .chef-listening {
+            background: rgba(220, 38, 38, 0.1);
+            border: 2px solid #dc2626;
+            color: #ef4444;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+            animation: pulse-red 2s infinite;
+        }
+
+        /* ANSWERING QUERY: Blue Glow */
+        .chef-answering {
+            background: rgba(37, 99, 235, 0.1);
+            border: 2px solid #3b82f6;
+            color: #60a5fa;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            animation: pulse-blue 2s infinite;
+        }
+
+        /* NARRATING INSTRUCTION: Green Glow */
+        .chef-narrating {
+            background: rgba(99, 179, 17, 0.1);
+            border: 2px solid #63B311;
+            color: #63B311;
+            box-shadow: 0 0 20px rgba(99, 179, 17, 0.3);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+            }
+        }
+
+        @keyframes pulse-blue {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+
+        @keyframes pulse-green {
+            0% {
+                box-shadow: 0 0 0 0 rgba(99, 179, 17, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(99, 179, 17, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 179, 17, 0);
+            }
+        }
+
+        .step-active {
+            border-left: 4px solid #63B311;
+            background: linear-gradient(90deg, rgba(99, 179, 17, 0.1) 0%, transparent 100%);
+        }
+
+        /* Scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <canvas id="waveCanvas"></canvas>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('home')">
+                <div
+                    class="w-8 h-8 rounded-full bg-gradient-to-br from-[#63B311] to-[#3a630a] flex items-center justify-center font-bold text-white shadow-lg">
+                    CS</div>
+                <span class="text-xl font-bold tracking-wide text-white font-heading">CookSaathi</span>
+            </div>
+            <div class="flex gap-8 text-sm font-medium">
+                <button onclick="switchTab('home')" id="nav-home" class="text-[#63B311] transition-colors">Home</button>
+                <button onclick="switchTab('recipes')" id="nav-recipes"
+                    class="text-gray-400 hover:text-[#63B311] transition-colors">World Favorites</button>
+                <button onclick="switchTab('about')" id="nav-about"
+                    class="text-gray-400 hover:text-[#63B311] transition-colors">About Us</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-12 px-4 relative z-10 max-w-6xl mx-auto w-full">
+
+        <div id="homeSection" class="animate-fade-in">
+            <div class="text-center mb-12 space-y-4">
+                <h1 class="text-5xl md:text-7xl font-bold tracking-tight">
+                    <span class="block text-white mb-2">Unlock your new</span>
+                    <span class="text-[#63B311]">culinary intelligence</span>
+                </h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+                    100+ recipes generated instantly. Detect ingredients from a single photo.
+                </p>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-8 mb-8 max-w-4xl mx-auto">
+                <div class="relative group cursor-pointer mb-6"
+                    onclick="document.getElementById('imageUpload').click()">
+                    <div
+                        class="border-2 border-dashed border-gray-700 bg-black/20 rounded-2xl h-56 flex flex-col items-center justify-center transition-all group-hover:border-[#63B311] group-hover:bg-black/40">
+                        <input type="file" id="imageUpload" accept="image/*" class="hidden">
+                        <div id="uploadUiContent" class="text-center">
+                            <svg class="w-12 h-12 text-[#63B311] mx-auto mb-3 opacity-80" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span class="text-white font-semibold text-lg">Click to scan ingredients</span>
+                        </div>
+                        <img id="previewImg" class="h-full object-contain hidden rounded-lg" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
+                    <div class="md:col-span-8">
+                        <input type="text" id="promptText" placeholder="Specific cravings? (e.g., Spicy, Soup)"
+                            class="w-full h-12 px-6 rounded-full glass-input text-sm">
+                    </div>
+                    <div class="md:col-span-4 flex items-center h-12 px-6 rounded-full glass-input">
+                        <span class="text-gray-400 text-sm mr-auto">Servings</span>
+                        <input type="number" id="servingSize" value="2" min="1" max="10"
+                            class="w-12 bg-transparent text-right text-white focus:outline-none font-bold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="flex justify-between items-center px-2"><label
+                            class="text-gray-300 text-sm">Vegan</label><input type="checkbox" id="isVegan"
+                            class="toggle-switch"></div>
+                    <div class="flex justify-between items-center px-2"><label class="text-gray-300 text-sm">Gluten
+                            Free</label><input type="checkbox" id="isGlutenFree" class="toggle-switch"></div>
+                    <div class="flex justify-between items-center px-2"><label
+                            class="text-gray-300 text-sm">Keto</label><input type="checkbox" id="isLowCarb"
+                            class="toggle-switch"></div>
+                    <div class="flex justify-between items-center px-2"><label class="text-gray-300 text-sm">Quick
+                            Prep</label><input type="checkbox" id="isQuickPrep" class="toggle-switch"></div>
+                </div>
+
+                <button id="generateBtn"
+                    class="w-full h-14 btn-primary rounded-full text-lg font-bold tracking-wide flex items-center justify-center">
+                    <span id="btnText">Generate Recipe</span>
+                    <div id="loader"
+                        class="hidden ml-3 w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin">
+                    </div>
+                </button>
+            </div>
+
+            <div id="resultArea" class="hidden space-y-6 pb-24 max-w-4xl mx-auto">
+                <div id="nutritionGrid" class="grid grid-cols-3 gap-4"></div>
+                <div class="glass-panel rounded-3xl p-8">
+                    <h2 id="recipeTitle" class="text-3xl font-bold text-white mb-6 font-heading"></h2>
+                    <div id="recipeContent" class="space-y-4 text-gray-300 leading-relaxed"></div>
+                </div>
+            </div>
+
+            <div id="chefFloat"
+                class="fixed bottom-10 right-10 z-50 transition-all duration-500 transform translate-y-32 opacity-0 hidden">
+                <button id="voiceBtn"
+                    class="w-20 h-20 rounded-full flex items-center justify-center chef-btn chef-idle shadow-2xl">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                        <path
+                            d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="recipesSection" class="hidden animate-fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">World Flavors</h2>
+                <p class="text-gray-400">Curated trending recipes from top kitchens.</p>
+            </div>
+            <div id="recipeGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"></div>
+        </div>
+
+        <div id="aboutSection" class="hidden animate-fade-in max-w-6xl mx-auto">
+            <div
+                class="glass-panel rounded-3xl p-10 mb-8 flex flex-col md:flex-row items-center gap-8 border-l-4 border-l-[#63B311]">
+                <div
+                    class="w-20 h-20 rounded-2xl bg-[#63B311] flex items-center justify-center shadow-lg flex-shrink-0 text-white">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-2">CookSaathi AI</h2>
+                    <p class="text-gray-400 text-lg">Your intelligent kitchen companion. We bridge the gap between
+                        "What's in my fridge?" and "What's for dinner?" using state-of-the-art vision models.</p>
+                </div>
+            </div>
+            <div id="featuresGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+
+        <div id="recipeModal" class="fixed inset-0 z-[100] hidden">
+            <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onclick="closeRecipeModal()">
+            </div>
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto no-scrollbar flex items-center justify-center p-4">
+                <div
+                    class="relative rounded-3xl glass-panel max-w-2xl w-full max-h-[80vh] overflow-y-auto no-scrollbar p-8">
+                    <button onclick="closeRecipeModal()"
+                        class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg></button>
+                    <div id="modalContent"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module">
+
+        //=======================================================================
+        //=======================================================================
+        const API_KEY = ""; // <--- KEY
+        //=======================================================================
+        //=======================================================================
+
+        // --- 1. SINE WAVE BACKGROUND ---
+        (function initWave() {
+            const canvas = document.getElementById('waveCanvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, lines = [];
+            const gap = 45;
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                lines = [];
+                for (let y = 0; y < h + gap; y += gap) {
+                    lines.push({ y, amp: 20 + Math.random() * 20, speed: 0.002 + Math.random() * 0.003, offset: Math.random() * Math.PI * 2 });
+                }
+            }
+            let time = 0;
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                time++;
+                ctx.lineWidth = 1;
+                lines.forEach(l => {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(99, 179, 17, 0.15)`; // Green lines
+                    for (let x = 0; x <= w; x += 10) {
+                        ctx.lineTo(x, l.y + Math.sin(x * 0.003 + time * l.speed + l.offset) * l.amp);
+                    }
+                    ctx.stroke();
+                });
+                requestAnimationFrame(animate);
+            }
+            window.addEventListener('resize', resize);
+            resize(); animate();
+        })();
+
+        // --- VARIABLES ---
+        const fileInput = document.getElementById('imageUpload');
+        const previewImg = document.getElementById('previewImg');
+        const uploadContent = document.getElementById('uploadUiContent');
+        const generateBtn = document.getElementById('generateBtn');
+        const resultArea = document.getElementById('resultArea');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const chefFloat = document.getElementById('chefFloat');
+        let imgBase64 = null, imgMime = null, fullRecipeMarkdown = "", stepsData = [], currentStep = 0;
+        let recognition, isListening = false;
+
+        // --- UI HANDLERS ---
+        window.switchTab = (tab) => {
+            ['homeSection', 'recipesSection', 'aboutSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['nav-home', 'nav-recipes', 'nav-about'].forEach(id => document.getElementById(id).classList.replace('text-[#63B311]', 'text-gray-400'));
+
+            if (tab === 'home') {
+                document.getElementById('homeSection').classList.remove('hidden');
+                document.getElementById('nav-home').classList.replace('text-gray-400', 'text-[#63B311]');
+            } else if (tab === 'recipes') {
+                document.getElementById('recipesSection').classList.remove('hidden');
+                document.getElementById('nav-recipes').classList.replace('text-gray-400', 'text-[#63B311]');
+                renderGlobalRecipes();
+            } else {
+                document.getElementById('aboutSection').classList.remove('hidden');
+                document.getElementById('nav-about').classList.replace('text-gray-400', 'text-[#63B311]');
+                renderAbout();
+            }
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                    uploadContent.classList.add('hidden');
+                    imgBase64 = e.target.result.split(',')[1];
+                    imgMime = file.type;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        generateBtn.addEventListener('click', async () => {
+            if (!imgBase64) return alert("Upload an image first.");
+            generateBtn.disabled = true;
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('btnText').innerText = "Analyzing...";
+
+            // Constraints
+            const diet = [
+                document.getElementById('isVegan').checked ? "Vegan" : "",
+                document.getElementById('isGlutenFree').checked ? "Gluten-Free" : "",
+                document.getElementById('isLowCarb').checked ? "Keto" : "",
+                document.getElementById('isQuickPrep').checked ? "Quick (<30m)" : ""
+            ].filter(Boolean).join(", ");
+            const note = document.getElementById('promptText').value;
+            const servings = document.getElementById('servingSize').value;
+
+            const prompt = `Analyze image. Create recipe. ${servings} Servings. ${diet}. Note: ${note}.
+            Format: # [Name] \n ## Stats \n Calories: [X] | Protein: [X] \n ## Ingredients \n - [Item] \n ## Instructions \n 1. [Step]`;
+
+            try {
+                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: imgMime, data: imgBase64 } }] }] })
+                });
+                const data = await resp.json();
+                fullRecipeMarkdown = data.candidates[0].content.parts[0].text;
+                renderRecipe(fullRecipeMarkdown);
+                chefFloat.classList.remove('hidden');
+                setTimeout(() => chefFloat.classList.remove('translate-y-32', 'opacity-0'), 100);
+            } catch (e) { alert(e.message); }
+            finally {
+                generateBtn.disabled = false;
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('btnText').innerText = "Generate Recipe";
+                generateBtn.classList.add('hidden'); // Hide after success
+            }
+        });
+
+        function renderRecipe(md) {
+            resultArea.classList.remove('hidden');
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+            const lines = md.split('\n');
+            let html = '', statsHtml = '';
+            stepsData = []; currentStep = 0;
+
+            lines.forEach(line => {
+                let clean = line.replace(/\*\*/g, '').trim();
+                if (!clean) return;
+                if (clean.startsWith('# ') && !clean.startsWith('##')) document.getElementById('recipeTitle').innerText = clean.replace('#', '');
+                else if (clean.startsWith('Calories:')) {
+                    clean.split('|').forEach(s => {
+                        const [l, v] = s.split(':');
+                        statsHtml += `<div class="bg-white/5 rounded-xl p-3 text-center border border-white/10"><div class="text-[#63B311] font-bold text-xl">${v || '-'}</div><div class="text-xs text-gray-400 uppercase">${l}</div></div>`;
+                    });
+                    document.getElementById('nutritionGrid').innerHTML = statsHtml;
+                }
+                else if (clean.match(/^\d+\./)) {
+                    const text = clean.replace(/^\d+\./, '').trim();
+                    stepsData.push(text);
+                    html += `<div id="step-${stepsData.length - 1}" class="p-4 rounded-xl bg-white/5 mb-3 border border-transparent transition"><span class="text-[#63B311] font-bold text-lg mr-2">${stepsData.length}.</span>${text}</div>`;
+                }
+                else if (clean.startsWith('##')) html += `<h3 class="text-xl font-bold text-[#63B311] mt-6 mb-3">${clean.replace('##', '')}</h3>`;
+                else if (clean.startsWith('-')) html += `<li class="text-gray-300 ml-5 marker:text-[#63B311]">${clean.substring(1)}</li>`;
+            });
+            document.getElementById('recipeContent').innerHTML = html;
+        }
+
+        // --- VOICE LOGIC ---
+        voiceBtn.addEventListener('click', () => {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return alert("No Voice Support");
+
+            if (!isListening) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    setVisuals('listening'); // RED
+                };
+                recognition.onresult = async (e) => {
+                    const trans = e.results[e.results.length - 1][0].transcript.toLowerCase().trim();
+                    console.log("Heard:", trans);
+
+                    // COMMANDS
+                    if (trans.includes('next')) { navStep(1); return; }
+                    if (trans.includes('previous') || trans.includes('back')) { navStep(-1); return; }
+                    if (trans.includes('repeat')) { navStep(0); return; }
+
+                    // QUERY
+                    recognition.stop();
+                    setVisuals('answering'); // BLUE (Thinking)
+
+                    const prompt = `Context: ${fullRecipeMarkdown}. Current Step: "${stepsData[currentStep]}". User: "${trans}". Answer briefly (<2 sentences).`;
+                    try {
+                        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                            method: 'POST', body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                        });
+                        const d = await r.json();
+                        setVisuals('answering'); // Stay Blue while answering query
+                        await speak(d.candidates[0].content.parts[0].text);
+                        if (isListening) recognition.start();
+                        setVisuals('listening'); // Back to Red
+                    } catch (e) { console.error(e); }
+                };
+                recognition.start();
+            } else {
+                isListening = false;
+                if (recognition) recognition.stop();
+                window.speechSynthesis.cancel();
+                setVisuals('idle');
+            }
+        });
+
+        function setVisuals(state) {
+            voiceBtn.className = `w-20 h-20 rounded-full flex items-center justify-center chef-btn shadow-2xl transition-all duration-300`;
+            // Remove all specific classes first
+            voiceBtn.classList.remove('chef-idle', 'chef-listening', 'chef-answering', 'chef-narrating');
+
+            // Add specific class
+            if (state === 'idle') voiceBtn.classList.add('chef-idle'); // Grey
+            if (state === 'listening') voiceBtn.classList.add('chef-listening'); // Red
+            if (state === 'answering') voiceBtn.classList.add('chef-answering'); // Blue
+            if (state === 'narrating') voiceBtn.classList.add('chef-narrating'); // Green
+        }
+
+        function speak(text) {
+            return new Promise(res => {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text);
+                u.onend = res;
+                window.speechSynthesis.speak(u);
+            });
+        }
+
+        async function navStep(dir) {
+            let next = currentStep + dir;
+            if (dir === 0) next = currentStep;
+            if (next >= 0 && next < stepsData.length) {
+                currentStep = next;
+                document.querySelectorAll('[id^="step-"]').forEach(el => el.classList.remove('step-active', 'bg-white/10'));
+                const el = document.getElementById(`step-${currentStep}`);
+                if (el) {
+                    el.classList.add('step-active', 'bg-white/10');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+                // NARRATING INSTRUCTION -> GREEN
+                setVisuals('narrating');
+                await speak(stepsData[currentStep]);
+                setVisuals('listening'); // Back to Red
+            }
+        }
+
+        // --- CONTENT POPULATION (From Previous Code) ---
+        const globalRecipesDB = [
+            { id: 1, title: "Authentic Carbonara", origin: "Italy", cal: "450", time: "25m", img: "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80", desc: "No cream, just eggs, cheese, pancetta.", ingredients: ["Spaghetti", "Pancetta", "Eggs", "Pecorino"], steps: ["Boil pasta", "Fry Pancetta", "Mix eggs", "Combine off heat"] },
+            { id: 2, title: "Spicy Miso Ramen", origin: "Japan", cal: "520", time: "45m", img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=800&q=80", desc: "Rich broth with chashu pork.", ingredients: ["Noodles", "Miso", "Pork", "Corn"], steps: ["Make broth", "Cook noodles", "Sear pork", "Assemble"] },
+            { id: 3, title: "Butter Chicken", origin: "India", cal: "600", time: "50m", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80", desc: "Velvety spiced tomato sauce.", ingredients: ["Chicken", "Cream", "Tomato", "Spices"], steps: ["Marinate", "Grill", "Simmer sauce", "Combine"] }
+        ];
+
+        window.renderGlobalRecipes = () => {
+            const grid = document.getElementById('recipeGrid');
+            if (grid.innerHTML) return;
+            grid.innerHTML = globalRecipesDB.map(r => `
+                <div class="glass-panel rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.02] transition" onclick="openRecipeModal(${r.id})">
+                    <img src="${r.img}" class="w-full h-48 object-cover opacity-90">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-white">${r.title}</h3>
+                        <p class="text-[#63B311] text-xs font-bold uppercase mb-2">${r.origin}</p>
+                        <div class="flex gap-4 text-xs text-gray-400 mt-4 border-t border-white/10 pt-3">
+                            <span>🔥 ${r.cal}</span><span>⏱ ${r.time}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.renderAbout = () => {
+            const grid = document.getElementById('featuresGrid');
+            if (grid.innerHTML) return;
+            const features = [
+                { title: "Vision Analysis", icon: "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z", desc: "Identify thousands of ingredients from a single photo." },
+                { title: "Dietary Engine", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", desc: "Auto-adjusts for Vegan, Keto, and Gluten-Free." },
+                { title: "Voice Command", icon: "M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z", desc: "Hands-free cooking with smart navigation." },
+                { title: "Global Database", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064", desc: "Access trending recipes from around the world." }
+            ];
+            grid.innerHTML = features.map(f => `
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="w-12 h-12 bg-[#63B311]/20 rounded-lg flex items-center justify-center text-[#63B311] mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${f.icon}"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">${f.title}</h3>
+                    <p class="text-gray-400 text-sm">${f.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        window.openRecipeModal = (id) => {
+            const r = globalRecipesDB.find(x => x.id === id);
+            document.getElementById('modalContent').innerHTML = `
+                <div class="flex gap-4 mb-4"><img src="${r.img}" class="w-24 h-24 rounded-xl object-cover"><div><h2 class="text-2xl font-bold text-white">${r.title}</h2><p class="text-[#63B311]">${r.origin}</p></div></div>
+                <h3 class="font-bold text-white mt-4 border-b border-white/10 pb-2">Ingredients</h3><ul class="text-gray-300 ml-4 list-disc">${r.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
+                <h3 class="font-bold text-white mt-4 border-b border-white/10 pb-2">Steps</h3><ol class="text-gray-300 ml-4 list-decimal">${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+            `;
+            document.getElementById('recipeModal').classList.remove('hidden');
+        }
+        window.closeRecipeModal = () => document.getElementById('recipeModal').classList.add('hidden');
+
+    </script>
+</body>
+
+</html>
