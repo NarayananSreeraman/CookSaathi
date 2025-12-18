@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Poppins:wght@400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,18 +51,44 @@
             pointer-events: none;
         }
 
-        /* === GLASSMORPHISM === */
-        .glass-nav {
-            background: rgba(5, 5, 5, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--glass-border);
+        /* === GLASS CAPSULE NAVBAR === */
+        .glass-capsule {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            border-radius: 9999px;
         }
 
+        /* The Moving Green Pill */
+        #navIndicator {
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            background: linear-gradient(90deg, #63B311 0%, #4a8a0c 100%);
+            border-radius: 9999px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+            opacity: 0;
+            /* Hidden initially until moved */
+            box-shadow: 0 0 20px rgba(99, 179, 17, 0.4);
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 10;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: white !important;
+        }
+
+        /* === GLASS PANELS === */
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
@@ -81,11 +107,30 @@
             box-shadow: 0 0 15px rgba(99, 179, 17, 0.2);
         }
 
+        /* === FEATURE CARDS (ABOUT US) === */
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(99, 179, 17, 0.3);
+            box-shadow: 0 20px 40px -10px rgba(99, 179, 17, 0.15);
+        }
+
+        .feature-card:hover .icon-box {
+            background: rgba(99, 179, 17, 0.2);
+            color: #63B311;
+            transform: scale(1.1);
+        }
+
         /* === BUTTONS === */
         .btn-primary {
             background: linear-gradient(135deg, #63B311 0%, #4a8a0c 100%);
             color: #fff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -94,51 +139,17 @@
             box-shadow: 0 0 25px rgba(99, 179, 17, 0.4);
         }
 
-        /* === TOGGLES === */
-        .toggle-switch {
-            appearance: none;
-            width: 44px;
-            height: 24px;
-            background-color: #333;
-            border-radius: 9999px;
-            position: relative;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .toggle-switch:checked {
-            background-color: var(--primary-green);
-        }
-
-        .toggle-switch::before {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-            background: white;
-            transition: 0.3s;
-        }
-
-        .toggle-switch:checked::before {
-            transform: translateX(20px);
-        }
-
         /* === CHATBOT STATES === */
         .chef-btn {
             transition: all 0.4s ease;
         }
 
-        /* IDLE: Dark Grey */
         .chef-idle {
             background: #1a1a1a;
             border: 2px solid #333;
             color: #666;
         }
 
-        /* LISTENING: Red Pulse */
         .chef-listening {
             background: rgba(220, 38, 38, 0.1);
             border: 2px solid #dc2626;
@@ -147,7 +158,6 @@
             animation: pulse-red 2s infinite;
         }
 
-        /* ANSWERING QUERY: Blue Glow */
         .chef-answering {
             background: rgba(37, 99, 235, 0.1);
             border: 2px solid #3b82f6;
@@ -156,7 +166,6 @@
             animation: pulse-blue 2s infinite;
         }
 
-        /* NARRATING INSTRUCTION: Green Glow */
         .chef-narrating {
             background: rgba(99, 179, 17, 0.1);
             border: 2px solid #63B311;
@@ -166,60 +175,75 @@
         }
 
         @keyframes pulse-red {
-            0% {
-                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
-            }
 
-            70% {
-                box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
-            }
-
+            0%,
             100% {
                 box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(220, 38, 38, 0.1);
             }
         }
 
         @keyframes pulse-blue {
-            0% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
-            }
 
-            70% {
-                box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
-            }
-
+            0%,
             100% {
                 box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(59, 130, 246, 0.1);
             }
         }
 
         @keyframes pulse-green {
-            0% {
-                box-shadow: 0 0 0 0 rgba(99, 179, 17, 0.4);
-            }
 
-            70% {
-                box-shadow: 0 0 0 15px rgba(99, 179, 17, 0);
-            }
-
+            0%,
             100% {
                 box-shadow: 0 0 0 0 rgba(99, 179, 17, 0);
             }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(99, 179, 17, 0.1);
+            }
         }
 
-        .step-active {
-            border-left: 4px solid #63B311;
-            background: linear-gradient(90deg, rgba(99, 179, 17, 0.1) 0%, transparent 100%);
+        /* Toggles & Scrollbar */
+        .toggle-switch {
+            appearance: none;
+            width: 40px;
+            height: 22px;
+            background: #333;
+            border-radius: 99px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        /* Scrollbar */
+        .toggle-switch:checked {
+            background: #63B311;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            background: white;
+            transition: 0.3s;
+        }
+
+        .toggle-switch:checked::before {
+            transform: translateX(18px);
+        }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
     </style>
 </head>
@@ -227,29 +251,38 @@
 <body class="min-h-screen flex flex-col">
 
     <canvas id="waveCanvas"></canvas>
+    <!--change-1-->
+    <div class="fixed top-6 left-0 w-full z-50 flex justify-center pointer-events-none">
+        <nav class="glass-capsule p-1.5 flex items-center pointer-events-auto relative w-full max-w-5xl mx-auto">
+            <div id="navIndicator" class="absolute left-0 w-0 rounded-full"></div>
 
-    <nav class="fixed top-0 w-full z-50 glass-nav">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('home')">
-                <div
-                    class="w-8 h-8 rounded-full bg-gradient-to-br from-[#63B311] to-[#3a630a] flex items-center justify-center font-bold text-white shadow-lg">
-                    CS</div>
-                <span class="text-xl font-bold tracking-wide text-white font-heading">CookSaathi</span>
+            <div class="flex items-center justify-between w-full relative z-10">
+
+                <div class="flex items-center gap-2 px-4 py-2 cursor-pointer" onclick="switchTab('home', this)">
+                    <div
+                        class="w-6 h-6 rounded-full bg-gradient-to-br from-[#63B311] to-[#3a630a] flex items-center justify-center text-[10px] font-bold text-white shadow-lg">
+                        CS</div>
+                    <span class="text-sm font-bold tracking-wide text-white font-heading">CookSaathi</span>
+                </div>
+
+                <div class="flex gap-1">
+                    <button onclick="switchTab('home', this)" id="nav-home"
+                        class="nav-item active px-5 py-2 text-sm font-medium text-white rounded-full hover:text-white/80 transition-colors">Home</button>
+                    <button onclick="switchTab('recipes', this)" id="nav-recipes"
+                        class="nav-item px-5 py-2 text-sm font-medium text-gray-400 rounded-full hover:text-white transition-colors">World
+                        Favorites</button>
+                    <button onclick="switchTab('about', this)" id="nav-about"
+                        class="nav-item px-5 py-2 text-sm font-medium text-gray-400 rounded-full hover:text-white transition-colors">About
+                        Us</button>
+                </div>
             </div>
-            <div class="flex gap-8 text-sm font-medium">
-                <button onclick="switchTab('home')" id="nav-home" class="text-[#63B311] transition-colors">Home</button>
-                <button onclick="switchTab('recipes')" id="nav-recipes"
-                    class="text-gray-400 hover:text-[#63B311] transition-colors">World Favorites</button>
-                <button onclick="switchTab('about')" id="nav-about"
-                    class="text-gray-400 hover:text-[#63B311] transition-colors">About Us</button>
-            </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 
     <main class="flex-grow pt-32 pb-12 px-4 relative z-10 max-w-6xl mx-auto w-full">
 
         <div id="homeSection" class="animate-fade-in">
-            <div class="text-center mb-12 space-y-4">
+            <div class="text-center mb-12 space-y-4 pt-8">
                 <h1 class="text-5xl md:text-7xl font-bold tracking-tight">
                     <span class="block text-white mb-2">Unlock your new</span>
                     <span class="text-[#63B311]">culinary intelligence</span>
@@ -313,7 +346,20 @@
             </div>
 
             <div id="resultArea" class="hidden space-y-6 pb-24 max-w-4xl mx-auto">
-                <div id="nutritionGrid" class="grid grid-cols-3 gap-4"></div>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div id="nutritionGrid" class="grid grid-cols-3 gap-4 flex-grow"></div>
+
+                    <button onclick="location.reload()"
+                        class="h-auto min-h-[60px] px-6 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition font-medium flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                        Start Over
+                    </button>
+                </div>
+
                 <div class="glass-panel rounded-3xl p-8">
                     <h2 id="recipeTitle" class="text-3xl font-bold text-white mb-6 font-heading"></h2>
                     <div id="recipeContent" class="space-y-4 text-gray-300 leading-relaxed"></div>
@@ -333,19 +379,19 @@
             </div>
         </div>
 
-        <div id="recipesSection" class="hidden animate-fade-in">
+        <div id="recipesSection" class="hidden animate-fade-in pt-8">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">World Flavors</h2>
-                <p class="text-gray-400">Curated trending recipes from top kitchens.</p>
+                <p class="text-gray-400">Award-winning dishes from Michelin kitchens & street corners.</p>
             </div>
             <div id="recipeGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"></div>
         </div>
 
-        <div id="aboutSection" class="hidden animate-fade-in max-w-6xl mx-auto">
+        <div id="aboutSection" class="hidden animate-fade-in max-w-6xl mx-auto pt-8">
             <div
-                class="glass-panel rounded-3xl p-10 mb-8 flex flex-col md:flex-row items-center gap-8 border-l-4 border-l-[#63B311]">
+                class="glass-panel rounded-3xl p-10 mb-10 flex flex-col md:flex-row items-center gap-8 border-l-4 border-l-[#63B311] shadow-[0_0_30px_rgba(99,179,17,0.1)]">
                 <div
-                    class="w-20 h-20 rounded-2xl bg-[#63B311] flex items-center justify-center shadow-lg flex-shrink-0 text-white">
+                    class="w-20 h-20 rounded-2xl bg-[#63B311] flex items-center justify-center shadow-lg flex-shrink-0 text-white animate-pulse">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -353,11 +399,11 @@
                 </div>
                 <div>
                     <h2 class="text-3xl font-bold text-white mb-2">CookSaathi AI</h2>
-                    <p class="text-gray-400 text-lg">Your intelligent kitchen companion. We bridge the gap between
-                        "What's in my fridge?" and "What's for dinner?" using state-of-the-art vision models.</p>
+                    <p class="text-gray-400 text-lg">The gap between "What's in my fridge?" and "Dinner is served." We
+                        use advanced multimodal AI to turn chaos into cuisine.</p>
                 </div>
             </div>
-            <div id="featuresGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            <div id="featuresGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
         </div>
 
         <div id="recipeModal" class="fixed inset-0 z-[100] hidden">
@@ -381,13 +427,128 @@
 
     <script type="module">
 
-        //=======================================================================
-        //=======================================================================
+        //================================================================================
         const API_KEY = ""; // <--- KEY
-        //=======================================================================
-        //=======================================================================
+        //================================================================================
 
-        // --- 1. SINE WAVE BACKGROUND ---
+        // --- 1. NAVBAR ANIMATION LOGIC ---
+        // Initialize pill on the Home tab on load
+        window.addEventListener('load', () => {
+            const homeBtn = document.getElementById('nav-home');
+            moveNavPill(homeBtn);
+        });
+
+
+        function moveNavPill(element) {
+            const indicator = document.getElementById('navIndicator');
+            const nav = element.closest('nav');
+
+            // Get position relative to the container (nav)
+            const parentRect = nav.getBoundingClientRect();
+            const elRect = element.getBoundingClientRect();
+
+            // Calculate absolute left/width based on container
+            const left = elRect.left - parentRect.left;
+            const width = elRect.width;
+
+            // Apply styles
+            indicator.style.left = `${left}px`;
+            indicator.style.width = `${width}px`;
+            indicator.style.opacity = '1';
+        }
+
+        // --- 2. TAB SWITCHING ---
+        window.switchTab = (tab, btnElement) => {
+            // Hide all Sections
+            ['homeSection', 'recipesSection', 'aboutSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
+            // Text Color Reset
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active', 'text-white'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.add('text-gray-400'));
+
+            // Show active section & Update Pill
+            if (tab === 'home') document.getElementById('homeSection').classList.remove('hidden');
+            if (tab === 'recipes') {
+                document.getElementById('recipesSection').classList.remove('hidden');
+                renderGlobalRecipes();
+            }
+            if (tab === 'about') {
+                document.getElementById('aboutSection').classList.remove('hidden');
+                renderAbout();
+            }
+
+            // Update Active Text Color
+            if (btnElement && btnElement.id.startsWith('nav')) {
+                btnElement.classList.add('active');
+                btnElement.classList.remove('text-gray-400');
+                moveNavPill(btnElement);
+            }
+        }
+
+        // --- 3. EXPANDED RECIPE DATABASE ---
+        const globalRecipesDB = [
+            // Original 3
+            { id: 1, title: "Authentic Carbonara", origin: "Rome, Italy", cal: "450", time: "25m", img: "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80", desc: "Classic Roman technique. No cream, just eggs, pecorino, and guanciale.", ingredients: ["Spaghetti", "Guanciale", "Eggs", "Pecorino Romano"], steps: ["Boil pasta", "Render guanciale", "Mix eggs & cheese", "Emulsify off heat"] },
+            { id: 2, title: "Spicy Miso Ramen", origin: "Sapporo, Japan", cal: "520", time: "45m", img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=800&q=80", desc: "Rich umami broth topped with chashu pork, corn, and spicy butter.", ingredients: ["Ramen Noodles", "Red Miso", "Pork Belly", "Corn"], steps: ["Simmer broth", "Cook noodles", "Sear pork", "Assemble bowl"] },
+            { id: 3, title: "Butter Chicken", origin: "Delhi, India", cal: "600", time: "50m", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80", desc: "Tandoori chicken simmered in a velvety, spiced tomato cream sauce.", ingredients: ["Chicken Thighs", "Tomato Puree", "Cream", "Kasuri Methi"], steps: ["Marinate chicken", "Grill chicken", "Simmer sauce", "Finish with cream"] },
+
+            // New Indian Veg
+            { id: 4, title: "Royal Dal Makhani", origin: "Punjab, India", cal: "480", time: "8h (slow cook)", img: "https://www.funfoodfrolic.com/wp-content/uploads/2023/04/Dal-Makhani-1.jpg", desc: "Black lentils slow-cooked overnight with butter and cream for rich texture.", ingredients: ["Black Urad Dal", "Kidney Beans", "Butter", "Fresh Cream", "Ginger Garlic Paste"], steps: ["Soak lentils overnight", "Slow cook with spices", "Temper with butter/garlic", "Finish with cream"] },
+            { id: 5, title: "Paneer Lababdar", origin: "North India", cal: "550", time: "40m", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80", desc: "Soft cottage cheese cubes in a creamy, onion-tomato gravy with cashews.", ingredients: ["Paneer", "Cashews", "Tomatoes", "Onions", "Cardamom"], steps: ["Sauté spices", "Blend onion/tomato/cashew", "Simmer gravy", "Add paneer cubes"] },
+
+            // New Michelin/Acclaimed
+            { id: 6, title: "Miso Black Cod", origin: "Nobu Style", cal: "380", time: "3 Days (Prep)", img: "https://www.foodandwine.com/thmb/gal2eelnVqNc4_iI4CmWBi0-YGQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Black-Cod-with-Miso-FT-RECIPE1023-c8b5a15cc2eb4d8a9cbb6881c446789b.jpg", desc: "The legendary sweet-savory fish dish popularized by Chef Nobu Matsuhisa.", ingredients: ["Black Cod Fillets", "White Miso", "Mirin", "Sake", "Sugar"], steps: ["Make miso marinade", "Marinate fish for 72h", "Wipe off excess miso", "Broil until caramelized"] },
+            { id: 7, title: "Ratatouille (Confit Byaldi)", origin: "Provence, France", cal: "220", time: "90m", img: "https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?auto=format&fit=crop&w=800&q=80", desc: "Thomas Keller's refined version. Paper-thin vegetable slices baked to perfection.", ingredients: ["Zucchini", "Eggplant", "Roma Tomatoes", "Bell Pepper Sauce"], steps: ["Make piperade sauce base", "Mandoline slice veggies", "Arrange in spiral", "Bake covered then uncovered"] },
+            { id: 8, title: "Lobster Thermidor", origin: "Paris, France", cal: "750", time: "1h", img: "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=800&q=80", desc: "A French classic. Lobster meat cooked in a rich wine sauce, stuffed back into the shell, and browned.", ingredients: ["Whole Lobster", "Cognac", "Gruyère Cheese", "Mustard", "Egg Yolks"], steps: ["Cook lobster & remove meat", "Make béchamel with Cognac", "Mix meat & sauce", "Broil with cheese"] },
+            { id: 9, title: "Osso Buco", origin: "Milan, Italy", cal: "680", time: "3h", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80", desc: "Cross-cut veal shanks braised with vegetables, white wine and broth.", ingredients: ["Veal Shanks", "White Wine", "Vegetables", "Gremolata (Lemon/Parsley)"], steps: ["Dredge & sear veal", "Sauté mirepoix", "Braise in wine/stock", "Top with gremolata"] }
+        ];
+
+        window.renderGlobalRecipes = () => {
+            const grid = document.getElementById('recipeGrid');
+            if (grid.innerHTML) return;
+            grid.innerHTML = globalRecipesDB.map(r => `
+                <div class="glass-panel rounded-2xl overflow-hidden cursor-pointer group hover:scale-[1.02] transition duration-300" onclick="openRecipeModal(${r.id})">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="${r.img}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition duration-500 group-hover:scale-110">
+                        <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10">
+                            <span class="text-[#63B311] text-xs font-bold uppercase tracking-wider">${r.origin}</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-white mb-2 leading-tight">${r.title}</h3>
+                        <p class="text-gray-400 text-sm line-clamp-2">${r.desc}</p>
+                        <div class="flex gap-4 text-xs text-gray-500 mt-4 border-t border-white/10 pt-3">
+                            <span class="flex items-center gap-1 text-gray-300"><span class="text-[#63B311]">🔥</span> ${r.cal}</span>
+                            <span class="flex items-center gap-1 text-gray-300"><span class="text-[#63B311]">⏱</span> ${r.time}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- 4. HYPE ABOUT US ---
+        window.renderAbout = () => {
+            const grid = document.getElementById('featuresGrid');
+            if (grid.innerHTML) return;
+            const features = [
+                { title: "Vision Intelligence", icon: "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z", desc: "Don't guess. We scan textures, labels, and quantities with 98% accuracy using Gemini 1.5 Flash." },
+                { title: "Dietary Alchemy", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", desc: "One click transforms any greasy favorite into a Keto, Vegan, or Gluten-Free masterpiece." },
+                { title: "Hands-Free Command", icon: "M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z", desc: "Keep your screen clean. Navigate steps and ask cooking questions just by speaking." },
+                { title: "Global Knowledge", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064", desc: "From street food in Delhi to fine dining in Paris, access a curated database of flavors." }
+            ];
+            grid.innerHTML = features.map(f => `
+                <div class="glass-panel p-8 rounded-2xl feature-card cursor-default relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#63B311] opacity-5 rounded-full blur-3xl -mr-16 -mt-16 transition group-hover:opacity-10"></div>
+                    <div class="icon-box w-14 h-14 bg-[#63B311]/10 rounded-xl flex items-center justify-center text-[#63B311] mb-6 transition-transform duration-300 border border-[#63B311]/20">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${f.icon}"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">${f.title}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">${f.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- WAVE ANIMATION ---
         (function initWave() {
             const canvas = document.getElementById('waveCanvas');
             const ctx = canvas.getContext('2d');
@@ -408,7 +569,7 @@
                 ctx.lineWidth = 1;
                 lines.forEach(l => {
                     ctx.beginPath();
-                    ctx.strokeStyle = `rgba(99, 179, 17, 0.15)`; // Green lines
+                    ctx.strokeStyle = `rgba(99, 179, 17, 0.15)`;
                     for (let x = 0; x <= w; x += 10) {
                         ctx.lineTo(x, l.y + Math.sin(x * 0.003 + time * l.speed + l.offset) * l.amp);
                     }
@@ -420,7 +581,9 @@
             resize(); animate();
         })();
 
-        // --- VARIABLES ---
+        // --- CORE LOGIC (AI, Voice, Modal) ---
+
+        // ... (Previous logic for File Upload, AI Generation, Voice remains identical) ...
         const fileInput = document.getElementById('imageUpload');
         const previewImg = document.getElementById('previewImg');
         const uploadContent = document.getElementById('uploadUiContent');
@@ -430,25 +593,6 @@
         const chefFloat = document.getElementById('chefFloat');
         let imgBase64 = null, imgMime = null, fullRecipeMarkdown = "", stepsData = [], currentStep = 0;
         let recognition, isListening = false;
-
-        // --- UI HANDLERS ---
-        window.switchTab = (tab) => {
-            ['homeSection', 'recipesSection', 'aboutSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            ['nav-home', 'nav-recipes', 'nav-about'].forEach(id => document.getElementById(id).classList.replace('text-[#63B311]', 'text-gray-400'));
-
-            if (tab === 'home') {
-                document.getElementById('homeSection').classList.remove('hidden');
-                document.getElementById('nav-home').classList.replace('text-gray-400', 'text-[#63B311]');
-            } else if (tab === 'recipes') {
-                document.getElementById('recipesSection').classList.remove('hidden');
-                document.getElementById('nav-recipes').classList.replace('text-gray-400', 'text-[#63B311]');
-                renderGlobalRecipes();
-            } else {
-                document.getElementById('aboutSection').classList.remove('hidden');
-                document.getElementById('nav-about').classList.replace('text-gray-400', 'text-[#63B311]');
-                renderAbout();
-            }
-        }
 
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -467,11 +611,12 @@
 
         generateBtn.addEventListener('click', async () => {
             if (!imgBase64) return alert("Upload an image first.");
+
             generateBtn.disabled = true;
             document.getElementById('loader').classList.remove('hidden');
             document.getElementById('btnText').innerText = "Analyzing...";
 
-            // Constraints
+            // Constraints with change-2
             const diet = [
                 document.getElementById('isVegan').checked ? "Vegan" : "",
                 document.getElementById('isGlutenFree').checked ? "Gluten-Free" : "",
@@ -482,25 +627,51 @@
             const servings = document.getElementById('servingSize').value;
 
             const prompt = `Analyze image. Create recipe. ${servings} Servings. ${diet}. Note: ${note}.
-            Format: # [Name] \n ## Stats \n Calories: [X] | Protein: [X] \n ## Ingredients \n - [Item] \n ## Instructions \n 1. [Step]`;
+            Format: # [Name] \n Calories: [X] | Protein: [X] | Carbs: [X] \n ## Ingredients \n - [Item] \n ## Instructions \n 1. [Step]`;
 
             try {
-                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                // FIX 1: Use 'v1alpha' endpoint for bleeding-edge models like gemini-2.5-flash
+                const resp = await fetch(`https://generativelanguage.googleapis.com/v1alpha/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: imgMime, data: imgBase64 } }] }] })
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: prompt },
+                                { inlineData: { mimeType: imgMime, data: imgBase64 } }
+                            ]
+                        }]
+                    })
                 });
+
                 const data = await resp.json();
+
+                // FIX 2: Debugging - If this logs an error, we know the API key/Model is rejected
+                if (data.error) {
+                    console.error("API Error:", data.error);
+                    throw new Error(`Google API Error: ${data.error.message}`);
+                }
+
+                // FIX 3: Safety Check - Ensure 'candidates' exists before reading [0]
+                if (!data.candidates || data.candidates.length === 0) {
+                    console.warn("Blocked Response:", data);
+                    throw new Error("The AI blocked the request (Safety/Privacy filters).");
+                }
+
                 fullRecipeMarkdown = data.candidates[0].content.parts[0].text;
                 renderRecipe(fullRecipeMarkdown);
+
                 chefFloat.classList.remove('hidden');
                 setTimeout(() => chefFloat.classList.remove('translate-y-32', 'opacity-0'), 100);
-            } catch (e) { alert(e.message); }
-            finally {
+
+            } catch (e) {
+                console.error(e);
+                alert("Error: " + e.message);
+            } finally {
                 generateBtn.disabled = false;
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('btnText').innerText = "Generate Recipe";
-                generateBtn.classList.add('hidden'); // Hide after success
+                if (fullRecipeMarkdown) generateBtn.classList.add('hidden');
             }
         });
 
@@ -527,13 +698,15 @@
                     stepsData.push(text);
                     html += `<div id="step-${stepsData.length - 1}" class="p-4 rounded-xl bg-white/5 mb-3 border border-transparent transition"><span class="text-[#63B311] font-bold text-lg mr-2">${stepsData.length}.</span>${text}</div>`;
                 }
-                else if (clean.startsWith('##')) html += `<h3 class="text-xl font-bold text-[#63B311] mt-6 mb-3">${clean.replace('##', '')}</h3>`;
+                // Added check to skip the "Stats" word in the rendered HTML and change-3
+                else if (clean.startsWith('##') && !clean.includes('Stats')) {
+                    html += `<h3 class="text-xl font-bold text-[#63B311] mt-6 mb-3">${clean.replace('##', '')}</h3>`;
+                }
                 else if (clean.startsWith('-')) html += `<li class="text-gray-300 ml-5 marker:text-[#63B311]">${clean.substring(1)}</li>`;
             });
             document.getElementById('recipeContent').innerHTML = html;
         }
 
-        // --- VOICE LOGIC ---
         voiceBtn.addEventListener('click', () => {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) return alert("No Voice Support");
@@ -560,7 +733,20 @@
                     recognition.stop();
                     setVisuals('answering'); // BLUE (Thinking)
 
-                    const prompt = `Context: ${fullRecipeMarkdown}. Current Step: "${stepsData[currentStep]}". User: "${trans}". Answer briefly (<2 sentences).`;
+
+                    // NEW CODE (Human Persona)// We tell Gemini to act like a Chef friend, use fillers, and avoid formatting.
+
+                    const prompt = `You are CookSaathi, a warm, encouraging, and witty chef companion cooking alongside the user.
+                    Context: The user is making ${document.getElementById('recipeTitle').innerText}.
+                    Current Step Details: "${stepsData[currentStep]}".
+                    User said: "${trans}".
+
+                    Instructions for your reply:
+                    1. Answer as if you are talking to a friend in the kitchen.
+                    2. Be helpful but conversational. Use natural fillers (e.g., "Well," "Alright," "So").
+                    3. Keep it under 2 sentences.
+                    4. CRITICAL: Do NOT use asterisks, markdown, or lists. strictly plain text only.`;
+
                     try {
                         const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
                             method: 'POST', body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -583,24 +769,55 @@
 
         function setVisuals(state) {
             voiceBtn.className = `w-20 h-20 rounded-full flex items-center justify-center chef-btn shadow-2xl transition-all duration-300`;
-            // Remove all specific classes first
             voiceBtn.classList.remove('chef-idle', 'chef-listening', 'chef-answering', 'chef-narrating');
 
-            // Add specific class
-            if (state === 'idle') voiceBtn.classList.add('chef-idle'); // Grey
-            if (state === 'listening') voiceBtn.classList.add('chef-listening'); // Red
-            if (state === 'answering') voiceBtn.classList.add('chef-answering'); // Blue
-            if (state === 'narrating') voiceBtn.classList.add('chef-narrating'); // Green
+            if (state === 'idle') voiceBtn.classList.add('chef-idle');
+            if (state === 'listening') voiceBtn.classList.add('chef-listening');
+            if (state === 'answering') voiceBtn.classList.add('chef-answering');
+            if (state === 'narrating') voiceBtn.classList.add('chef-narrating');
+        }
+        // Removes Markdown and special characters so the voice flows smoothly
+        function cleanTextForSpeech(text) {
+            return text
+                .replace(/[*#_`]/g, '') // Remove markdown symbols
+                .replace(/\n/g, '. ')   // Turn new lines into pauses
+                .replace(/\s+/g, ' ')   // Remove double spaces
+                .trim();
         }
 
         function speak(text) {
             return new Promise(res => {
-                window.speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.cancel(); // Stop previous audio
+
+                // 1. Clean the text first
+                const spokenText = cleanTextForSpeech(text);
+                const u = new SpeechSynthesisUtterance(spokenText);
+
+                // 2. Find a "Human-sounding" voice
+                const voices = window.speechSynthesis.getVoices();
+
+                // Priority list: Look for Google voices (usually higher quality) or Microsoft Natural
+                const preferredVoice = voices.find(v =>
+                    (v.name.includes("Google") && v.lang.includes("en-US")) ||
+                    (v.name.includes("Natural") && v.lang.includes("en-US")) ||
+                    (v.name.includes("Samantha") && v.lang.includes("en-US")) // Good macOS voice
+                );
+
+                if (preferredVoice) {
+                    u.voice = preferredVoice;
+                }
+
+                // 3. Tweak Pitch and Rate for natural flow
+                u.pitch = 1.1; // Slightly higher pitch often sounds more energetic
+                u.rate = 1.05; // A tiny bit faster feels more conversational than the slow robotic default
+
                 u.onend = res;
                 window.speechSynthesis.speak(u);
             });
         }
+
+        // IMPORTANT: Voices load asynchronously. We need to trigger loading early.
+        window.speechSynthesis.getVoices();
 
         async function navStep(dir) {
             let next = currentStep + dir;
@@ -613,56 +830,10 @@
                     el.classList.add('step-active', 'bg-white/10');
                     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-
-                // NARRATING INSTRUCTION -> GREEN
                 setVisuals('narrating');
                 await speak(stepsData[currentStep]);
-                setVisuals('listening'); // Back to Red
+                setVisuals('listening');
             }
-        }
-
-        // --- CONTENT POPULATION (From Previous Code) ---
-        const globalRecipesDB = [
-            { id: 1, title: "Authentic Carbonara", origin: "Italy", cal: "450", time: "25m", img: "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80", desc: "No cream, just eggs, cheese, pancetta.", ingredients: ["Spaghetti", "Pancetta", "Eggs", "Pecorino"], steps: ["Boil pasta", "Fry Pancetta", "Mix eggs", "Combine off heat"] },
-            { id: 2, title: "Spicy Miso Ramen", origin: "Japan", cal: "520", time: "45m", img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=800&q=80", desc: "Rich broth with chashu pork.", ingredients: ["Noodles", "Miso", "Pork", "Corn"], steps: ["Make broth", "Cook noodles", "Sear pork", "Assemble"] },
-            { id: 3, title: "Butter Chicken", origin: "India", cal: "600", time: "50m", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80", desc: "Velvety spiced tomato sauce.", ingredients: ["Chicken", "Cream", "Tomato", "Spices"], steps: ["Marinate", "Grill", "Simmer sauce", "Combine"] }
-        ];
-
-        window.renderGlobalRecipes = () => {
-            const grid = document.getElementById('recipeGrid');
-            if (grid.innerHTML) return;
-            grid.innerHTML = globalRecipesDB.map(r => `
-                <div class="glass-panel rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.02] transition" onclick="openRecipeModal(${r.id})">
-                    <img src="${r.img}" class="w-full h-48 object-cover opacity-90">
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-white">${r.title}</h3>
-                        <p class="text-[#63B311] text-xs font-bold uppercase mb-2">${r.origin}</p>
-                        <div class="flex gap-4 text-xs text-gray-400 mt-4 border-t border-white/10 pt-3">
-                            <span>🔥 ${r.cal}</span><span>⏱ ${r.time}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        window.renderAbout = () => {
-            const grid = document.getElementById('featuresGrid');
-            if (grid.innerHTML) return;
-            const features = [
-                { title: "Vision Analysis", icon: "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z", desc: "Identify thousands of ingredients from a single photo." },
-                { title: "Dietary Engine", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", desc: "Auto-adjusts for Vegan, Keto, and Gluten-Free." },
-                { title: "Voice Command", icon: "M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z", desc: "Hands-free cooking with smart navigation." },
-                { title: "Global Database", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064", desc: "Access trending recipes from around the world." }
-            ];
-            grid.innerHTML = features.map(f => `
-                <div class="glass-panel p-6 rounded-2xl">
-                    <div class="w-12 h-12 bg-[#63B311]/20 rounded-lg flex items-center justify-center text-[#63B311] mb-4">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${f.icon}"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">${f.title}</h3>
-                    <p class="text-gray-400 text-sm">${f.desc}</p>
-                </div>
-            `).join('');
         }
 
         window.openRecipeModal = (id) => {
