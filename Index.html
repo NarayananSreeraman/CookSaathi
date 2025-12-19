@@ -274,6 +274,10 @@
                     <button onclick="switchTab('about', this)" id="nav-about"
                         class="nav-item px-5 py-2 text-sm font-medium text-gray-400 rounded-full hover:text-white transition-colors">About
                         Us</button>
+                    <!--change-2.1-->
+                    <button onclick="switchTab('faq', this)" id="nav-faq"
+                        class="nav-item px-5 py-2 text-sm font-medium text-gray-400 rounded-full hover:text-white transition-colors">Help
+                    </button>
                 </div>
             </div>
         </nav>
@@ -406,18 +410,147 @@
             <div id="featuresGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
         </div>
 
+        <!--change-2.2-->
+        <div id="faqSection" class="hidden animate-fade-in max-w-5xl mx-auto pt-8 pb-20">
+
+            <div
+                class="glass-panel rounded-3xl p-6 md:p-10 mb-12 border-l-4 border-l-[#63B311] hover:shadow-[0_0_40px_rgba(99,179,17,0.15)] transition duration-500">
+
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 border-b border-white/10 pb-4">How to Master
+                    CookSaathi</h2>
+
+                <ul class="space-y-4 text-gray-300 text-base md:text-lg leading-relaxed mb-8">
+                    <li class="flex gap-3">
+                        <span class="text-[#63B311] font-bold">1.</span>
+                        <span>First, click a photo of the core ingredient(s) that you wish to use.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-[#63B311] font-bold">2.</span>
+                        <span>Then, click on <span class="text-white font-semibold">Generate Recipe</span>.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-[#63B311] font-bold">3.</span>
+                        <span>When detailed instructions pop up with required ingredients and nutritional value, go
+                            ahead and rock the kitchen!</span>
+                    </li>
+                </ul>
+
+                <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+                    <h3 class="text-xl font-bold text-white mb-6">Hands-Free Voice Command Mode</h3>
+
+                    <div class="space-y-8">
+
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="shrink-0 w-14 h-14 rounded-full border-2 border-red-500 bg-red-500/10 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.5)] animate-pulse">
+                                <svg class="w-7 h-7 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                                    <path
+                                        d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold text-lg mb-1">The Listening Bot (Red)</p>
+                                <p class="text-sm text-gray-400 leading-relaxed">
+                                    It's listening to you while giving instructions. You can instruct it to go to the
+                                    <span class="text-[#63B311] font-bold">next step</span>, or ask it to go to the
+                                    <span class="text-[#63B311] font-bold">previous step</span>. If you didn't catch the
+                                    instruction, you can ask it to <span class="text-[#63B311] font-bold">repeat</span>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="shrink-0 w-14 h-14 rounded-full border-2 border-blue-500 bg-blue-500/10 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                                <svg class="w-7 h-7 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                                    <path
+                                        d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold text-lg mb-1">The Thinking Bot (Blue)</p>
+                                <p class="text-sm text-gray-400 leading-relaxed">
+                                    When you find out that you are missing a complimenting ingredient, don't worry!
+                                    <span class="text-blue-400 font-bold">Ask your doubt</span>, and you get the answer
+                                    you seek! A companion that's not gonna let you stop your kitchen grind!
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="shrink-0 w-14 h-14 rounded-full border-2 border-[#63B311] bg-[#63B311]/10 flex items-center justify-center shadow-[0_0_20px_rgba(99,179,17,0.5)]">
+                                <svg class="w-7 h-7 text-[#63B311]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold text-lg mb-1">The Narrator (Green)</p>
+                                <p class="text-sm text-gray-400 leading-relaxed">
+                                    That's the one you're <span class="text-[#63B311] font-bold">listening to!</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">Frequently Asked Questions</h2>
+            <div class="grid gap-4">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-[#63B311] mb-2">What is CookSaathi?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">CookSaathi is your intelligent culinary partner. It
+                        uses advanced AI vision to recognize ingredients from a single photo and creates customized,
+                        step-by-step recipes instantly.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-[#63B311] mb-2">What is its purpose?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Our mission is to help you "cook with what you
+                        have." We aim to reduce food waste and eliminate the stress of deciding what to cook by turning
+                        available ingredients into delicious meals.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-[#63B311] mb-2">How to use it from scratch?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">It's simple: 1. Upload a photo of your ingredients
+                        on the Home page. 2. Select dietary filters (Vegan, Keto, etc.). 3. Click "Generate Recipe" and
+                        let the AI do the magic!</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-[#63B311] mb-2">Can I save the recipes that I asked for?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Currently, CookSaathi operates in a "session-based"
+                        mode for privacy. We recommend taking a screenshot of your favorite recipes. A "My Cookbook"
+                        save feature is coming in the next update!</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-[#63B311] mb-2">What future updates can I expect?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">We are cooking up some great features: User
+                        Profiles to save history, calorie tracking integration, community recipe sharing, and
+                        multi-language voice support.</p>
+                </div>
+            </div>
+
+        </div>
+
         <div id="recipeModal" class="fixed inset-0 z-[100] hidden">
             <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onclick="closeRecipeModal()">
             </div>
             <div class="fixed inset-0 z-10 w-screen overflow-y-auto no-scrollbar flex items-center justify-center p-4">
                 <div
                     class="relative rounded-3xl glass-panel max-w-2xl w-full max-h-[80vh] overflow-y-auto no-scrollbar p-8">
-                    <button onclick="closeRecipeModal()"
-                        class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="closeRecipeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
-                        </svg></button>
+                        </svg>
+                    </button>
                     <div id="modalContent"></div>
                 </div>
             </div>
@@ -459,14 +592,22 @@
 
         // --- 2. TAB SWITCHING ---
         window.switchTab = (tab, btnElement) => {
-            // Hide all Sections
-            ['homeSection', 'recipesSection', 'aboutSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            // 1. Hide ALL sections (Added 'faqSection' to the list)
+            ['homeSection', 'recipesSection', 'aboutSection', 'faqSection'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
 
-            // Text Color Reset
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active', 'text-white'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.add('text-gray-400'));
+            // 2. Reset ALL nav buttons (Added 'nav-faq' to the list)
+            ['nav-home', 'nav-recipes', 'nav-about', 'nav-faq'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.remove('active', 'text-white');
+                    el.classList.add('text-gray-400');
+                }
+            });
 
-            // Show active section & Update Pill
+            // 3. Show the selected section
             if (tab === 'home') document.getElementById('homeSection').classList.remove('hidden');
             if (tab === 'recipes') {
                 document.getElementById('recipesSection').classList.remove('hidden');
@@ -476,8 +617,12 @@
                 document.getElementById('aboutSection').classList.remove('hidden');
                 renderAbout();
             }
+            // NEW: Handle FAQ Tab
+            if (tab === 'faq') {
+                document.getElementById('faqSection').classList.remove('hidden');
+            }
 
-            // Update Active Text Color
+            // 4. Update the Nav Pill position
             if (btnElement && btnElement.id.startsWith('nav')) {
                 btnElement.classList.add('active');
                 btnElement.classList.remove('text-gray-400');
