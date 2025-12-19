@@ -245,6 +245,20 @@
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
+        /* === FOOTER === */
+        .footer-link {
+            position: relative;
+            color: #9ca3af;
+            /* gray-400 */
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: #63B311;
+            text-shadow: 0 0 15px rgba(99, 179, 17, 0.8);
+        }
     </style>
 </head>
 
@@ -259,13 +273,14 @@
             <div class="flex items-center justify-between w-full relative z-10">
 
                 <div class="flex items-center gap-2 px-4 py-2 cursor-pointer" onclick="switchTab('home', this)">
-                    <div
-                        class="w-6 h-6 rounded-full bg-gradient-to-br from-[#63B311] to-[#3a630a] flex items-center justify-center text-[10px] font-bold text-white shadow-lg">
-                        CS</div>
+                    <img src="logo.png"
+                        class="w-10 h-10 object-contain drop-shadow-md hover:scale-110 transition-transform duration-300"
+                        alt="CookSaathi Logo">
                     <span class="text-sm font-bold tracking-wide text-white font-heading">CookSaathi</span>
                 </div>
 
-                <div class="flex gap-1">
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex gap-1" id="desktopMenu">
                     <button onclick="switchTab('home', this)" id="nav-home"
                         class="nav-item active px-5 py-2 text-sm font-medium text-white rounded-full hover:text-white/80 transition-colors">Home</button>
                     <button onclick="switchTab('recipes', this)" id="nav-recipes"
@@ -274,13 +289,38 @@
                     <button onclick="switchTab('about', this)" id="nav-about"
                         class="nav-item px-5 py-2 text-sm font-medium text-gray-400 rounded-full hover:text-white transition-colors">About
                         Us</button>
-                    <!--change-2.1-->
                     <button onclick="switchTab('faq', this)" id="nav-faq"
                         class="nav-item px-5 py-2 text-sm font-medium text-gray-400 rounded-full hover:text-white transition-colors">Help
                     </button>
                 </div>
+
+                <!-- Hamburger Button -->
+                <div class="md:hidden pr-4">
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
-        </nav>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu"
+                class="absolute top-16 right-0 w-48 glass-panel rounded-xl flex flex-col items-start p-2 gap-1 hidden md:hidden transition-all duration-300 transform origin-top-right scale-95 opacity-0">
+                <button onclick="mobileSwitchTab('home', this)"
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Home</button>
+                <button onclick="mobileSwitchTab('recipes', this)"
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">World
+                    Favorites</button>
+                <button onclick="mobileSwitchTab('about', this)"
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">About
+                    Us</button>
+                <button onclick="mobileSwitchTab('faq', this)"
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Help</button>
+            </div>
+    </div>
+    </nav>
     </div>
 
     <main class="flex-grow pt-32 pb-12 px-4 relative z-10 max-w-6xl mx-auto w-full">
@@ -558,7 +598,62 @@
 
     </main>
 
+    <!--update-3-->
+    <footer class="relative z-10 w-full max-w-6xl mx-auto px-4 pb-8 animate-fade-in">
+        <div class="glass-panel rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <img src="logo.png"
+                    class="w-8 h-8 object-contain opacity-80 grayscale hover:grayscale-0 transition duration-300"
+                    alt="CookSaathi Logo">
+                <span class="text-white font-bold font-heading tracking-wide">CookSaathi</span>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-8">
+                <a href="#" onclick="switchTab('home', document.getElementById('nav-home')); return false;"
+                    class="footer-link text-sm font-medium">Home</a>
+                <a href="#" onclick="switchTab('recipes', document.getElementById('nav-recipes')); return false;"
+                    class="footer-link text-sm font-medium">World Favorites</a>
+                <a href="#" onclick="switchTab('about', document.getElementById('nav-about')); return false;"
+                    class="footer-link text-sm font-medium">About Us</a>
+                <a href="#" onclick="switchTab('faq', document.getElementById('nav-faq')); return false;"
+                    class="footer-link text-sm font-medium">Help</a>
+            </div>
+
+            <div class="text-xs text-gray-500 font-light">
+                &copy; 2026 CookSaathi. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
     <script type="module">
+
+        // --- 0. MOBILE MENU LOGIC ---
+        window.toggleMobileMenu = () => {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => {
+                menu.classList.toggle('opacity-0');
+                menu.classList.toggle('scale-95');
+            }, 10);
+        }
+
+        window.mobileSwitchTab = (tab, btnElement) => {
+            // 1. Switch Tab
+            switchTab(tab, document.getElementById(`nav-${tab}`)); // Sync with desktop button style
+
+            // 2. Close Menu
+            toggleMobileMenu();
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.getElementById('mobileMenuBtn');
+            if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
 
         //================================================================================
         const API_KEY = ""; // <--- KEY
