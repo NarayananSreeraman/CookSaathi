@@ -267,7 +267,8 @@
     <canvas id="waveCanvas"></canvas>
     <!--change-1-->
     <div class="fixed top-6 left-0 w-full z-50 flex justify-center pointer-events-none">
-        <nav class="glass-capsule p-1.5 flex items-center pointer-events-auto relative w-full max-w-5xl mx-auto">
+        <nav
+            class="glass-capsule p-1.5 flex items-center pointer-events-auto relative w-[92%] md:w-full max-w-5xl mx-auto">
             <div id="navIndicator" class="absolute left-0 w-0 rounded-full"></div>
 
             <div class="flex items-center justify-between w-full relative z-10">
@@ -307,17 +308,17 @@
 
             <!-- Mobile Menu Dropdown -->
             <div id="mobileMenu"
-                class="absolute top-16 right-0 w-48 glass-panel rounded-xl flex flex-col items-start p-2 gap-1 hidden md:hidden transition-all duration-300 transform origin-top-right scale-95 opacity-0">
+                class="absolute top-16 right-0 w-48 bg-[#0a0a0a] border border-white/10 rounded-xl flex flex-col items-start p-2 gap-1 hidden md:hidden transition-all duration-300 transform origin-top-right scale-95 opacity-0 shadow-2xl">
                 <button onclick="mobileSwitchTab('home', this)"
-                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Home</button>
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-[#63B311] hover:bg-white/5 rounded-lg transition-colors">Home</button>
                 <button onclick="mobileSwitchTab('recipes', this)"
-                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">World
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-[#63B311] hover:bg-white/5 rounded-lg transition-colors">World
                     Favorites</button>
                 <button onclick="mobileSwitchTab('about', this)"
-                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">About
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-[#63B311] hover:bg-white/5 rounded-lg transition-colors">About
                     Us</button>
                 <button onclick="mobileSwitchTab('faq', this)"
-                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Help</button>
+                    class="w-full text-left px-4 py-2 text-sm font-medium text-gray-400 hover:text-[#63B311] hover:bg-white/5 rounded-lg transition-colors">Help</button>
             </div>
     </div>
     </nav>
