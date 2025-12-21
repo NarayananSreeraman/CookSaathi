@@ -657,7 +657,7 @@
         });
 
         //================================================================================
-        const API_KEY = ""; // <--- KEY
+        // <--- KEY IS HANDLED IN THE BACKEND - update4
         //================================================================================
 
         // --- 1. NAVBAR ANIMATION LOGIC ---
@@ -870,9 +870,11 @@
             const prompt = `Analyze image. Create recipe. ${servings} Servings. ${diet}. Note: ${note}.
             Format: # [Name] \n Calories: [X] | Protein: [X] | Carbs: [X] \n ## Ingredients \n - [Item] \n ## Instructions \n 1. [Step]`;
 
+            // ... inside generateBtn event listener ...
+
             try {
-                // FIX 1: Use 'v1alpha' endpoint for bleeding-edge models like gemini-2.5-flash
-                const resp = await fetch(`https://generativelanguage.googleapis.com/v1alpha/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                // UPDATED: Point to your own backend (no API key needed here)
+                const resp = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -886,6 +888,8 @@
                 });
 
                 const data = await resp.json();
+
+                // ... (Keep your existing error handling and rendering logic below)
 
                 // FIX 2: Debugging - If this logs an error, we know the API key/Model is rejected
                 if (data.error) {
@@ -976,7 +980,6 @@
 
 
                     // NEW CODE (Human Persona)// We tell Gemini to act like a Chef friend, use fillers, and avoid formatting.
-
                     const prompt = `You are CookSaathi, a warm, encouraging, and witty chef companion cooking alongside the user.
                     Context: The user is making ${document.getElementById('recipeTitle').innerText}.
                     Current Step Details: "${stepsData[currentStep]}".
@@ -989,8 +992,10 @@
                     4. CRITICAL: Do NOT use asterisks, markdown, or lists. strictly plain text only.`;
 
                     try {
-                        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
-                            method: 'POST', body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                        const r = await fetch('/api/generate', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                         });
                         const d = await r.json();
                         setVisuals('answering'); // Stay Blue while answering query
